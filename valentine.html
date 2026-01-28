@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💘 Lunga ❤️ Zee</title>
+
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1a0933;
+      --card: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #1b2a6d33, transparent 55%),
+                  radial-gradient(900px 700px at 85% 30%, #ff4da622, transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    /* soft glow orbs */
+    .orb {
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.25;
+      animation: float 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb.one { background: #ff4da6; top: -140px; left: -120px; }
+    .orb.two { background: #2ef2c5; bottom: -160px; right: -140px; animation-delay: 1.3s; }
+    .orb.three { background: #8b5cff; top: 55%; left: 65%; width: 280px; height: 280px; animation-delay: 2.2s; }
+
+    @keyframes float {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(18px,-12px) scale(1.04); }
+    }
+
+    .card {
+      width: min(680px, 92vw);
+      padding: 28px 22px 22px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .sparkleLine {
+      position: absolute;
+      inset: -1px;
+      border-radius: 22px;
+      pointer-events: none;
+      background: radial-gradient(260px 80px at 20% 0%, rgba(255,77,166,0.25), transparent 60%),
+                  radial-gradient(260px 80px at 80% 100%, rgba(46,242,197,0.18), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+
+    .names {
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .title {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 900;
+      margin: 0 0 6px;
+    }
+
+    .subtitle {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .question {
+      margin: 14px 0 8px;
+      font-size: clamp(24px, 3.2vw, 40px);
+      font-weight: 950;
+      letter-spacing: 0.4px;
+      text-shadow: 0 10px 40px rgba(255,77,166,0.12);
+    }
+
+    .status {
+      margin: 10px auto 18px;
+      color: var(--muted);
+      min-height: 30px;
+      font-size: 14px;
+      font-weight: 800;
+      transform-origin: center;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      margin-top: 6px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.22);
+      min-width: 150px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.28); }
+    button:active { transform: translateY(1px) scale(0.98); }
+
+    .yes {
+      background: linear-gradient(135deg, rgba(255,77,166,0.32), rgba(255,46,99,0.20));
+      border-color: rgba(255,77,166,0.35);
+    }
+    .no {
+      background: linear-gradient(135deg, rgba(46,242,197,0.18), rgba(255,255,255,0.06));
+      border-color: rgba(46,242,197,0.32);
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* Block shake */
+    .shake { animation: shake 0.35s ease-in-out; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    /* ✅ YES response font grow + bounce */
+    .grow-text { animation: growBounce 0.45s ease-out; }
+    @keyframes growBounce {
+      0%   { transform: scale(1); }
+      60%  { transform: scale(1.25); }
+      100% { transform: scale(1.15); }
+    }
+
+    /* ✅ Runaway NO (moves smoothly) */
+    .runaway {
+      position: relative;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+
+    /* Celebration overlay */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(650px 420px at 50% 40%, rgba(255,77,166,0.25), transparent 65%),
+                  rgba(0,0,0,0.35);
+      border-radius: 22px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 16px;
+    }
+    .overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .finalBox {
+      width: min(560px, 92%);
+      text-align: center;
+      padding: 16px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(10, 10, 20, 0.62);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    .finalBox h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+    .finalBox p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .photoRow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .photo {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      object-fit: cover;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      transform: translateY(6px);
+      opacity: 0;
+      animation: popIn 0.5s ease forwards;
+    }
+    .photo:nth-child(2){ animation-delay: 0.12s; }
+
+    @keyframes popIn {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .tiny {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* Hearts + Confetti layers */
+    .hearts, .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      opacity: 0.9;
+      animation: rise linear forwards;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,0.25));
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0) scale(0.9); opacity: 0; }
+      10%  { opacity: 0.95; }
+      100% { transform: translateY(-110vh) scale(1.35); opacity: 0; }
+    }
+
+    .conf {
+      position: absolute;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      opacity: 0.95;
+      animation: fall linear forwards;
+      transform: translateY(-20px) rotate(0deg);
+      filter: drop-shadow(0 10px 8px rgba(0,0,0,0.25));
+    }
+    @keyframes fall {
+      to { transform: translateY(115vh) rotate(720deg); opacity: 0.9; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
+  <div class="hearts" id="hearts"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <main class="card" id="card">
+    <div class="sparkleLine"></div>
+
+    <div class="names">LUNGA ❤️ ZEE</div>
+    <h1 class="title">Hey Zinhle 💌</h1>
+    <p class="subtitle">Lungani made this just for you 🥺</p>
+
+    <div class="question" id="question">Will you be my valentine?</div>
+    <div class="status" id="status">Choose carefully 😌</div>
+
+    <div class="buttons" id="btnWrap">
+      <button class="yes" id="yesBtn">Yes 💖</button>
+      <button class="no runaway" id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="hint">P.S. The buttons are intentionally “tricky” 😅</div>
+
+    <div class="overlay" id="overlay" title="Tap anywhere to close">
+      <div class="finalBox">
+        <h2 id="finalTitle">🎉 You unlocked the “No”</h2>
+        <p id="finalText">
+          Zinhle… you said “No” twice 😭💞<br/>
+          But you’re still my Valentine forever 😌
+        </p>
+
+        <!-- Put these next to this HTML file and rename them exactly: her1.jpg and her2.jpg -->
+        <div class="photoRow">
+          <img class="photo" src="her1.jpg" alt="Zinhle photo 1" />
+          <img class="photo" src="her2.jpg" alt="Zinhle photo 2" />
+        </div>
+
+        <div class="tiny">Made with love by Lungani ❤️</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Put music.mp3 next to this HTML file -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const card = document.getElementById("card");
+    const overlay = document.getElementById("overlay");
+    const btnWrap = document.getElementById("btnWrap");
+
+    const heartsWrap = document.getElementById("hearts");
+    const confettiWrap = document.getElementById("confetti");
+    const music = document.getElementById("bgMusic");
+
+    let noClicks = 0;
+    let yesClicks = 0;
+
+    const yesReplies = [
+      "Awww Zinhle… that’s sweet 😌 but I’m asking again 🤭",
+      "You clicked YES… so I’ll ask again 😂",
+      "Okay okay… one more time 😏",
+      "You’re too cute 😭 click again 💖",
+      "That YES is suspicious… try again 😌"
+    ];
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    function startMusic() {
+      // Mobile browsers require user interaction first (we call this inside clicks)
+      if (!music) return;
+      music.play().catch(() => {});
+    }
+
+    function shakeCard() {
+      card.classList.remove("shake");
+      void card.offsetWidth;
+      card.classList.add("shake");
+    }
+
+    function spawnHearts(durationMs = 3200) {
+      const emojis = ["💖", "💗", "💘", "💝", "💕", "💞"];
+      const endAt = Date.now() + durationMs;
+
+      const interval = setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.bottom = (-10 - Math.random() * 10) + "px";
+        h.style.fontSize = (14 + Math.random() * 24) + "px";
+        h.style.animationDuration = (1800 + Math.random() * 1700) + "ms";
+        h.style.animationDelay = (Math.random() * 120) + "ms";
+        heartsWrap.appendChild(h);
+
+        h.addEventListener("animationend", () => h.remove());
+        if (Date.now() > endAt) clearInterval(interval);
+      }, 70);
+    }
+
+    function spawnConfetti(pieces = 160) {
+      const colors = [
+        "rgba(255,77,166,0.95)",
+        "rgba(46,242,197,0.9)",
+        "rgba(255,255,255,0.9)",
+        "rgba(139,92,255,0.9)",
+        "rgba(255,46,99,0.9)"
+      ];
+
+      for (let i = 0; i < pieces; i++) {
+        const c = document.createElement("div");
+        c.className = "conf";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.top = (-30 - Math.random() * 60) + "px";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.width = (6 + Math.random() * 10) + "px";
+        c.style.height = (10 + Math.random() * 14) + "px";
+        c.style.animationDuration = (1500 + Math.random() * 1600) + "ms";
+        c.style.animationDelay = (Math.random() * 250) + "ms";
+        confettiWrap.appendChild(c);
+
+        c.addEventListener("animationend", () => c.remove());
+      }
+    }
+
+    // Keep NO within the card area (rough bounds)
+    function moveNoButtonRandomly() {
+      const wrapRect = btnWrap.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // Max travel inside the wrap
+      const maxX = Math.max(10, (wrapRect.width - btnRect.width) / 2);
+      const maxY = 36; // small vertical travel feels nicer
+
+      const x = (Math.random() * 2 - 1) * maxX;
+      const y = (Math.random() * 2 - 1) * maxY;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // ✅ Swapped logic:
+    // YES -> keep asking again + animated font size growth
+    yesBtn.addEventListener("click", () => {
+      startMusic();
+      yesClicks++;
+
+      setStatus(yesReplies[yesClicks % yesReplies.length]);
+
+      // animate bounce
+      statusEl.classList.remove("grow-text");
+      void statusEl.offsetWidth;
+      statusEl.classList.add("grow-text");
+
+      // increase font size gradually (cap it)
+      const baseSize = 14;
+      const maxSize = 26;
+      const newSize = Math.min(baseSize + yesClicks * 1.2, maxSize);
+      statusEl.style.fontSize = newSize + "px";
+
+      spawnHearts(900);
+    });
+
+    // NO -> first time blocked + runs away, second time allowed + celebration
+    noBtn.addEventListener("click", () => {
+      startMusic();
+      noClicks++;
+
+      if (noClicks === 1) {
+        moveNoButtonRandomly();
+        shakeCard();
+        setStatus("Eish 😭 you can’t say No yet… try again!");
+        statusEl.style.fontSize = "14px";
+        return;
+      }
+
+      // second NO -> allow + big celebration
+      setStatus("Okay… you insisted 😭💔 (but I still love you)");
+      overlay.classList.add("show");
+      spawnConfetti(190);
+      spawnHearts(3800);
+
+      // disable buttons after finish
+      yesBtn.disabled = true;
+      noBtn.disabled = true;
+      yesBtn.style.opacity = "0.7";
+      noBtn.style.opacity = "0.7";
+      yesBtn.style.cursor = "not-allowed";
+      noBtn.style.cursor = "not-allowed";
+    });
+
+    // Tap overlay to close (mobile friendly)
+    overlay.addEventListener("click", () => {
+      overlay.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
